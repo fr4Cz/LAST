@@ -16,7 +16,12 @@ def main():
     h = host.Os()
     w = webfetch.WebFetch()
 
-    w.get()
+    # Currently testing script functionality in git config and script.
+    # Scripts are currently located under exec/conf, exec/final and exec/init
+    g.install()
+    # w.get()
+    s.run_initial()
+    s.run_final()
 
 
 if __name__ == '__main__':

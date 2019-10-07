@@ -4,6 +4,7 @@ import json
 from git import Repo, GitError
 from lib.envir import Envir
 from lib.script import Script
+#   Todo; Implement logging
 
 
 class GitFetch:
@@ -48,6 +49,7 @@ class GitFetch:
 
                     if 'config' in pkg:
                         # Todo; run script in pkg['config']
+                        # Check if this is still needed, it seems like config_path is not necessary...
                         config_path = '{}/conf/{}'.format(os.environ['LAST_EXEC'], pkg['config'])
                         self.script.run(pkg['config'], when='conf')
             else:

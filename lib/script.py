@@ -2,6 +2,8 @@
 import os
 from lib import envir
 import subprocess
+#   Todo; Implement logging
+#   Scripts seems to run OK. However, there is no logging in place.
 
 
 class Script:
@@ -14,17 +16,27 @@ class Script:
     def run(self, name, when='conf'):
         if when == 'config':
             when = 'conf'
-
         try:
-            session = subprocess.Popen(['{}/{}/{}'.format(self.base_path, when, name)],
+            script_path = '{}/{}/{}'.format(self.base_path, when, name)
+
+            # Ensure script exists and is executable
+            if os.path.isfile(script_path):
+                if not os.access(script_path, os.X_OK):
+                    os.chmod(script_path, 0o755)
+
+            session = subprocess.Popen([script_path],
                                        stdout=subprocess.PIPE,
                                        stderr=subprocess.PIPE)
             stdout, stderr = session.communicate()
+
+            if stdout:
+                print(stdout.decode('utf-8'))
             if stderr:
                 # log.err('Script {} ended with exception: {}'.format(name, stderr))
-                print('Script {} ended with exception: {}'.format(name, stderr))
+                print('Script {} ended with exception: {}'.format(name, stderr.decode('utf-8')))
         except FileNotFoundError as e:
             # log.err(e)
+            # print(e)
             pass
 
     def run_final(self):
